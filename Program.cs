@@ -67,6 +67,9 @@ namespace VehicleComparer
             double insurance = double.Parse(Console.ReadLine());
 
             vehicleDao.Add(id, name, price, mileage, register, tax, insurance);
+
+            Console.Clear();
+            vehicleDao.Display();
         }    
         private void RemoveVehicle()
         {
@@ -81,6 +84,8 @@ namespace VehicleComparer
             if ( input == "Y" ) 
             {
                 vehicleDao.Delete(id);
+                Console.Clear();
+                vehicleDao.Display();
             }
             else if (input == "N" )
             {
