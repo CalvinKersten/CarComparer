@@ -22,7 +22,7 @@ namespace VehicleComparer
         {
             while (true)
             {
-                Console.Write("Add vehicle (Press: A) | Remove vehicle (Press: D): ");
+                Console.Write("Add vehicle (Press: A) | Remove vehicle (Press: D) | Edit vehicle (Press: E): ");
                 string input = Console.ReadLine();
                 if (input.ToUpper() == "A")
                 {
@@ -31,6 +31,10 @@ namespace VehicleComparer
                 else if (input.ToUpper() == "D")
                 {
                     RemoveVehicle();
+                }
+                else if (input.ToUpper() == "E")
+                {
+                    EditVehicle();
                 }
                 else
                 {
@@ -79,7 +83,7 @@ namespace VehicleComparer
             int id = int.Parse(Console.ReadLine());
 
             Console.Write($"Are you sure you wish to remove vehicle nr. {id}? (Y/N): ");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine().ToUpper();
 
             if ( input == "Y" ) 
             {
@@ -91,7 +95,64 @@ namespace VehicleComparer
             {
                 return;
             }
-            else { return; }
+            else 
+            {
+                Console.WriteLine($"'{input}' is not a valid option :(");
+                return; 
+            }
+        }
+        private void EditVehicle()
+        {
+            VehicleDao vehicleDao = new VehicleDao();
+
+            Console.Write("Number of vehicle you wish to edit: ");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.Write($"Are you sure you wish to edit vehicle nr. {id}? (Y/N) ");
+            string input = Console.ReadLine().ToUpper();
+
+            if ( input == "Y" )
+            {
+                Console.WriteLine("Press 'E' to exit without saving changes");
+
+                string name, register;
+                double price, tax, insurance;
+                int mileage;
+
+                Console.Write("New vehicle name: ");
+                name = Console.ReadLine();
+                if (name.ToUpper() == "E") return;
+
+                Console.Write("New vehicle price: ");
+                if (!double.TryParse(Console.ReadLine(), out price)) return;
+
+                Console.Write("New vehicle mileage: ");
+                if (!int.TryParse(Console.ReadLine(), out mileage)) return;
+
+                Console.Write("New vehicle register: ");
+                register = Console.ReadLine();
+                if (register.ToUpper() == "E") return;
+
+                Console.Write("New vehicle tax: ");
+                if (!double.TryParse(Console.ReadLine(), out tax)) return;
+
+                Console.Write("New vehicle insurance: ");
+                if (!double.TryParse(Console.ReadLine(), out insurance)) return;
+
+                vehicleDao.Edit(id, name, price, mileage, register, tax, insurance);
+
+                Console.Clear();
+                vehicleDao.Display();
+            }
+            else if ( input == "N" )
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine($"'{input}' is not a valid option :(");
+                return;
+            }
         }
     }
 }
